@@ -231,7 +231,7 @@ export interface Clerk {
    * Opens the Clerk Waitlist modal.
    * @param props Optional props that will be passed to the Waitlist component.
    */
-  openWaitlist: (props?: WaitlistProps) => void;
+  openWaitlist: (props?: __experimental_WaitlistProps) => void;
 
   /**
    * Closes the Clerk Waitlist modal.
@@ -379,7 +379,7 @@ export interface Clerk {
    * @param targetNode Target to mount the Waitlist component.
    * @param props Configuration parameters.
    */
-  mountWaitlist: (targetNode: HTMLDivElement, props?: WaitlistProps) => void;
+  mountWaitlist: (targetNode: HTMLDivElement, props?: __experimental_WaitlistProps) => void;
 
   /**
    * Unmount the Waitlist component from the target node.
@@ -1247,7 +1247,7 @@ export type OrganizationListProps = {
   hideSlug?: boolean;
 };
 
-export type WaitlistProps = {
+export type __experimental_WaitlistProps = {
   /**
    * Full URL or path to navigate after successful waitlist submission.
    */
@@ -1260,7 +1260,7 @@ export type WaitlistProps = {
   appearance?: WaitlistTheme;
 };
 
-export type WaitlistModalProps = WaitlistProps;
+export type __experimental_WaitlistModalProps = __experimental_WaitlistProps;
 
 export interface HandleEmailLinkVerificationParams {
   /**
