@@ -28,6 +28,7 @@ export {
   UserButton,
   __experimental_UserVerification,
   GoogleOneTap,
+  Waitlist,
 } from '@clerk/clerk-react';
 
 // The assignment of UserProfile with BaseUserProfile props is used

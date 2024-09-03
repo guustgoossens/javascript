@@ -38,6 +38,7 @@ import type {
   HandleEmailLinkVerificationParams,
   HandleOAuthCallbackParams,
   InstanceType,
+  JoinWaitlistParams,
   ListenerCallback,
   NavigateOptions,
   OrganizationListProps,
@@ -62,6 +63,8 @@ import type {
   UserButtonProps,
   UserProfileProps,
   UserResource,
+  WaitlistProps,
+  WaitlistResource,
   Web3Provider,
 } from '@clerk/types';
 
@@ -120,6 +123,7 @@ import {
   EmailLinkErrorCode,
   Environment,
   Organization,
+  Waitlist,
 } from './resources/internal';
 import { warnings } from './warnings';
 
@@ -497,6 +501,18 @@ export class Clerk implements ClerkInterface {
     void this.#componentControls.ensureMounted().then(controls => controls.closeModal('createOrganization'));
   };
 
+  public openWaitlist = (props?: WaitlistProps): void => {
+    this.assertComponentsReady(this.#componentControls);
+    void this.#componentControls
+      .ensureMounted({ preloadHint: 'Waitlist' })
+      .then(controls => controls.openModal('waitlist', props || {}));
+  };
+
+  public closeWaitlist = (): void => {
+    this.assertComponentsReady(this.#componentControls);
+    void this.#componentControls.ensureMounted().then(controls => controls.closeModal('waitlist'));
+  };
+
   public mountSignIn = (node: HTMLDivElement, props?: SignInProps): void => {
     this.assertComponentsReady(this.#componentControls);
     void this.#componentControls.ensureMounted({ preloadHint: 'SignIn' }).then(controls =>
@@ -744,6 +760,25 @@ export class Clerk implements ClerkInterface {
   };
 
   public unmountUserButton = (node: HTMLDivElement): void => {
+    this.assertComponentsReady(this.#componentControls);
+    void this.#componentControls?.ensureMounted().then(controls => controls.unmountComponent({ node }));
+  };
+
+  public mountWaitlist = (node: HTMLDivElement, props?: WaitlistProps) => {
+    this.assertComponentsReady(this.#componentControls);
+    void this.#componentControls?.ensureMounted({ preloadHint: 'Waitlist' }).then(controls =>
+      controls.mountComponent({
+        name: 'Waitlist',
+        appearanceKey: 'waitlist',
+        node,
+        props,
+      }),
+    );
+
+    this.telemetry?.record(eventPrebuiltComponentMounted('Waitlist', props));
+  };
+
+  public unmountWaitlist = (node: HTMLDivElement): void => {
     this.assertComponentsReady(this.#componentControls);
     void this.#componentControls?.ensureMounted().then(controls => controls.unmountComponent({ node }));
   };
@@ -1478,6 +1513,9 @@ export class Clerk implements ClerkInterface {
 
   public getOrganization = async (organizationId: string): Promise<OrganizationResource> =>
     Organization.get(organizationId);
+
+  public joinWaitlist = async ({ emailAddress }: JoinWaitlistParams): Promise<WaitlistResource> =>
+    Waitlist.join({ emailAddress });
 
   public updateEnvironment(environment: EnvironmentResource): asserts this is { environment: EnvironmentResource } {
     this.environment = environment;
