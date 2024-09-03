@@ -32,7 +32,7 @@ export {
   UserProfile,
   __experimental_UserVerification,
   GoogleOneTap,
-  Waitlist,
+  __experimental_Waitlist,
 } from './client-boundary/uiComponents';
 
 /**
